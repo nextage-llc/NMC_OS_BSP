@@ -1,0 +1,7 @@
+set-name: 'PolarFire-SoC-HSS::RTEMS'
+
+# Define entry points for the harts
+hart-entry-points: {u54_1: '0x1000000000', u54_2: '0x1000000000', u54_3: '0x1000000000', u54_4: '0x1000000000'}
+
+payloads:
+  test/hello.exe: {exec-addr: '0x1000000000', owner-hart: u54_1, priv-mode: prv_m, skip-opensbi: true}

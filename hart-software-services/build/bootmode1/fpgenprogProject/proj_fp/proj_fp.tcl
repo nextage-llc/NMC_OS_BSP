@@ -1,0 +1,5 @@
+open_project -project {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\proj_fp\proj_fp.pro} -connect_programmers {FALSE}
+load_programming_data -name {target} -header {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\target.hdr} -envm {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\envm.efc} -spm {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\target.spm} -dca {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\target.dca}
+export_single_ppd -name {target} -file {C:\Users\zsebr\Documents\Nextage_LLC\Scratchpad\DEV_NMC2v3\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject\proj_fp\target.ppd}
+save_project
+close_project
