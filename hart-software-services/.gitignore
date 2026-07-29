@@ -1,8 +1,8 @@
 *.d
 *.o
-*.bin
-*.elf
-*.hex
+.bin
+.elf
+.hex
 *.map
 *.sym
 *__pycache__
