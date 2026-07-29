@@ -1,0 +1,370 @@
+/dts-v1/;
+//Written by: Andrew Carton 6/1/2026
+
+/ {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	model = "Microchip PolarFire-SoC Custom MSS Board";
+	compatible = "microchip,mpfs-custom-mss", "microchip,mpfs";
+
+	aliases {
+		ethernet0 = "/soc/ethernet@20110000"; /* MAC_0 */
+		ethernet1 = "/soc/ethernet@20112000"; /* MAC_1 */
+		serial0 = "/soc/serial@20000000";     /* MMUART_0 */
+		serial1 = "/soc/serial@20100000";     /* MMUART_1 (Default Boot Console) */
+		serial2 = "/soc/serial@20102000";     /* MMUART_2 */
+		serial4 = "/soc/serial@20106000";     /* MMUART_4 */
+		i2c1 = "/soc/i2c@2010b000";            /* I2C_1 */
+		can0 = "/soc/can@2010d000";            /* CAN_1 assigned to can0 interface */
+	};
+
+	chosen {
+		stdout-path = "serial1:115200n8";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		timebase-frequency = <1000000>;
+
+		cpu1: cpu@1 {
+			compatible = "sifive,u54-mc", "sifive,rocket0", "riscv";
+			device_type = "cpu";
+			mmu-type = "riscv,sv39";
+			reg = <1>;
+			riscv,isa = "rv64imafdc";
+			riscv,isa-base = "rv64i";
+			riscv,isa-extensions = "i\0m\0a\0f\0d\0c\0zicntr\0zicsr\0zifencei\0zihpm";
+			clocks = <&clkcfg 0x00>;
+			status = "okay";
+
+			cpu1_intc: interrupt-controller {
+				#interrupt-cells = <0x01>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				compatible = "riscv,cpu-intc";
+				interrupt-controller;
+			};
+		};
+	};
+
+	refclk: mssrefclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <125000000>;
+	};
+
+	soc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		compatible = "simple-bus";
+		ranges;
+
+		clint@2000000 {
+			compatible = "sifive,clint0";
+			reg = <0x00 0x2000000 0x0 0xC000>;
+			interrupts-extended = <&cpu1_intc 0x03 &cpu1_intc 0x07>;
+		};
+
+		clkcfg: clkcfg@20002000 {
+			compatible = "microchip,mpfs-clkcfg";
+			reg = <0x00 0x20002000 0x00 0x1000 0x00 0x3e001000 0x00 0x1000>;
+			clocks = <&refclk>;
+			#clock-cells = <0x01>;
+			#reset-cells = <0x01>;
+			phandle = <0x01>;
+		};
+
+		plic: interrupt-controller@c000000 {
+			compatible = "sifive,plic-1.0.0";
+			reg = <0x0 0xc000000>, <0x0 0x4000000>;
+			#interrupt-cells = <1>;
+			#address-cells = <2>;
+			riscv,ndev = <186>;
+			interrupt-controller;
+			interrupts-extended = <&cpu1_intc 11 &cpu1_intc 9>;
+		};
+
+		/* eMMC Subsystem: 4-bit width, High Speed DDR */
+		mmc: mmc@20008000 {
+			compatible = "microchip,mpfs-sd4hc", "cdns,sd4hc";
+			reg = <0x0 0x20008000 0x0 0x1000>;
+			interrupt-parent = <&plic>;
+			interrupts = <0x58>;
+			clocks = <&clkcfg 0x06>;
+			bus-width = <0x04>;
+			disable-wp;
+			cap-mmc-highspeed;
+			mmc-ddr-1_8v;
+			status = "okay";
+		};
+
+		/* MMUART_0: Active on Bank2 A */
+		uart0: serial@20000000 {
+			compatible = "ns16550a";
+			reg = <0x0 0x20000000 0x0 0x400>;
+			reg-io-width = <4>;
+			reg-shift = <2>;
+			interrupt-parent = <&plic>;
+			interrupts = <90>;
+			current-speed = <115200>;
+			clocks = <&clkcfg 8>;
+			status = "okay";
+		};
+
+		/* MMUART_1: Active on Bank2 (Main Boot Console) */
+		uart1: serial@20100000 {
+			compatible = "ns16550a";
+			reg = <0x0 0x20100000 0x0 0x400>;
+			reg-io-width = <4>;
+			reg-shift = <2>;
+			interrupt-parent = <&plic>;
+			interrupts = <91>;
+			current-speed = <115200>;
+			clocks = <&clkcfg 9>;
+			status = "okay";
+		};
+
+		/* MMUART_2: Active on Bank2 */
+		uart2: serial@20102000 {
+			compatible = "ns16550a";
+			reg = <0x0 0x20102000 0x0 0x400>;
+			reg-io-width = <4>;
+			reg-shift = <2>;
+			interrupt-parent = <&plic>;
+			interrupts = <92>;
+			current-speed = <115200>;
+			clocks = <&clkcfg 10>;
+			status = "okay";
+		};
+
+		/* MMUART_3: Disabled */
+		uart3: serial@20104000 {
+			compatible = "ns16550a";
+			reg = <0x0 0x20104000 0x0 0x400>;
+			clocks = <&clkcfg 11>;
+			status = "disabled";
+		};
+
+		/* MMUART_4: Active on Bank2 */
+		uart4: serial@20106000 {
+			compatible = "ns16550a";
+			reg = <0x0 0x20106000 0x0 0x400>;
+			reg-io-width = <4>;
+			reg-shift = <2>;
+			interrupt-parent = <&plic>;
+			interrupts = <93>;
+			current-speed = <115200>;
+			clocks = <&clkcfg 12>;
+			status = "okay";
+		};
+
+		/* SPI_0: Active Master on Bank 2 */
+		spi0: spi@20108000 {
+			compatible = "microchip,mpfs-spi";
+			reg = <0x0 0x20108000 0x0 0x1000>;
+			clocks = <&clkcfg 11>;
+			interrupt-parent = <&plic>;
+			interrupts = <54>;
+			num-cs = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+		};
+
+		/* SPI_1: Disabled */
+		spi1: spi@20109000 {
+			compatible = "microchip,mpfs-spi";
+			reg = <0x0 0x20109000 0x0 0x1000>;
+			clocks = <&clkcfg 12>;
+			status = "disabled";
+		};
+
+		/* I2C_0: Disabled */
+		i2c0: i2c@2010a000 {
+			compatible = "microchip,mpfs-i2c";
+			reg = <0x0 0x2010a000 0x0 0x1000>;
+			clocks = <&clkcfg 13>;
+			status = "disabled";
+		};
+
+		/* I2C_1: Active on Bank2 B (Fast Speed 400kHz) */
+		i2c1: i2c@2010b000 {
+			compatible = "microchip,mpfs-i2c";
+			reg = <0x0 0x2010b000 0x0 0x1000>;
+			clocks = <&clkcfg 14>;
+			interrupt-parent = <&plic>;
+			interrupts = <53>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			clock-frequency = <400000>;
+			status = "okay";
+
+			/* u-blox LEA-F9T Target Address mapping for RTEMS application calls */
+			gps_timer@42 {
+				compatible = "u-blox,lea-f9t", "generic-i2c-device";
+				reg = <0x42>; /* 7-bit target I2C address */
+			};
+		}; /* <-- CORRECTED: Added missing block closing token here */
+
+		/* CAN_0: Disabled */
+		can0: can@2010c000 {
+			compatible = "microchip,mpfs-can";
+			reg = <0x0 0x2010c000 0x0 0x1000>;
+			clocks = <&clkcfg 15>;
+			status = "disabled";
+		};
+
+		/* CAN_1: Active on Bank2 A */
+		can1: can@2010d000 {
+			compatible = "microchip,mpfs-can";
+			reg = <0x0 0x2010d000 0x0 0x1000>;
+			clocks = <&clkcfg 16>;
+			interrupt-parent = <&plic>;
+			interrupts = <52>;
+			status = "okay";
+		};
+
+		/* Ethernet Controller 0: Drives the shared MDIO interface */
+		mac0: ethernet@20110000 {
+			compatible = "microchip,mpfs-macb", "cdns,macb";
+			reg = <0x00 0x20110000 0x00 0x2000>;
+			interrupt-parent = <&plic>;
+			interrupts = <0x40 0x41 0x42 0x43 0x44 0x45>;
+			local-mac-address = [00 00 00 00 00 00];
+			clocks = <&clkcfg 0x04>, <&clkcfg 0x01>;
+			clock-names = "pclk", "hclk";
+			status = "okay";
+			phy-mode = "sgmii";
+			phy-handle = <&phy0>;
+
+			mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				/* CORRECTED: Synchronized node names to match reg numbers */
+				phy0: ethernet-phy@8 {
+					reg = <8>;
+				};
+
+				phy1: ethernet-phy@9 {
+					reg = <9>;
+				};
+			};
+		};
+
+		/* Ethernet Controller 1: SGMII Data Plane referencing shared MDIO */
+		mac1: ethernet@20112000 {
+			compatible = "microchip,mpfs-macb", "cdns,macb";
+			reg = <0x00 0x20112000 0x00 0x2000>;
+			interrupt-parent = <&plic>;
+			interrupts = <0x46 0x47 0x48 0x49 0x4a 0x4b>;
+			local-mac-address = [00 00 00 00 00 00];
+			clocks = <&clkcfg 0x05>, <&clkcfg 0x02>;
+			clock-names = "pclk", "hclk";
+			status = "okay";
+			phy-mode = "sgmii";
+			phy-handle = <&phy1>;
+		};
+
+		/* QSPI Subsystem: Active 4-bit NOR Flash (Infineon S25HL01GT) */
+		qspi: spi@21000000 {
+			compatible = "microchip,mpfs-qspi";
+			reg = <0x0 0x21000000 0x0 0x1000>;
+			clocks = <&clkcfg 0x16>;
+			interrupt-parent = <&plic>;
+			interrupts = <0x55>;
+			num-cs = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			flash@0 {
+				compatible = "jedec,spi-nor";
+				reg = <0>;
+				spi-max-frequency = <102000000>;
+				spi-tx-bus-width = <4>;
+				spi-rx-bus-width = <4>;
+				status = "okay";
+			};
+		};
+
+		/* GPIO Controller 0 (Bank 4 Pins Active) */
+		gpio0: gpio@20120000 {
+			compatible = "microchip,mpfs-gpio";
+			reg = <0x0 0x20120000 0x0 0x1000>;
+			interrupt-parent = <&plic>;
+			clocks = <&clkcfg 23>;
+			gpio-controller;
+			#gpio-cells = <2>;
+			ngpios = <14>;
+			status = "okay";
+		};
+
+		/* GPIO Controller 1 (Bank 2 Pins Active) */
+		gpio1: gpio@20121000 {
+			compatible = "microchip,mpfs-gpio";
+			reg = <0x0 0x20121000 0x0 0x1000>;
+			interrupt-parent = <&plic>;
+			clocks = <&clkcfg 24>;
+			gpio-controller;
+			#gpio-cells = <2>;
+			ngpios = <24>;
+			status = "okay";
+		};
+
+		/* GPIO Controller 2: Unused */
+		gpio2: gpio@20122000 {
+			compatible = "microchip,mpfs-gpio";
+			reg = <0x0 0x20122000 0x0 0x1000>;
+			status = "disabled";
+		};
+
+		/* USB Host Controller: Disabled */
+		usb: usb@20201000 {
+			compatible = "microchip,mpfs-musb";
+			reg = <0x0 0x20201000 0x0 0x1000>;
+			status = "disabled";
+		};
+
+		mbox: mailbox@37020000 {
+			compatible = "microchip,mpfs-mailbox";
+			reg = <0x00 0x37020000 0x00 0x58>, <0x00 0x2000318c 0x00 0x40>, <0x00 0x37020800 0x00 0x100>;
+			interrupt-parent = <&plic>;
+			interrupts = <0x60>;
+			#mbox-cells = <1>;
+			status = "okay";
+		};
+
+		syscontroller: syscontroller {
+			compatible = "microchip,mpfs-sys-controller", "simple-bus";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			mboxes = <&mbox 0>;
+			status = "okay";
+		};
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x0 0x80000000>, <0x0 0x40000000>;
+		status = "okay";
+	};
+
+	memory@1040000000 {
+		device_type = "memory";
+		reg = <0x10 0x40000000>, <0x00 0x40000000>;
+		status = "okay";
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		region@BFC00000 {
+			reg = <0x00 0xbfc00000 0x00 0x400000>;
+			no-map;
+		};
+	};
+};
