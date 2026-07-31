@@ -49,16 +49,15 @@ To compile the Hart Software Services eNVM wrapper binary (`hss-envm-wrapper-bm1
    make BOARD=NMC2v3 config
    ```
 
-3. Compile the eNVM wrapper binary using the xPack GCC toolchain:
-
-   ```bash
-   make hss generator payload
-   ```
-
-4. Clean and rebuild the board target:
+3. Clean the board target:
 
    ```bash
    make BOARD=NMC2v3 clean
+   ```
+
+4. Compile the eNVM wrapper binary using the xPack GCC toolchain:
+
+   ```bash
    make BOARD=NMC2v3
    ```
 

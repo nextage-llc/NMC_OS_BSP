@@ -35,6 +35,8 @@ sudo apt update && sudo apt install -y build-essential device-tree-compiler liby
 
 ### Step 2: Compile the Device Tree Binary (`.dtb`)
 
+Device Tree Binary must be recompiled if Device Tree Source is modified
+
 ```bash
 cd mpfs-nmc-rtems-bsp
 dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
@@ -43,6 +45,34 @@ dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
 ### Step 3: Configure Payload Parameters (`rtems-payload.yaml`)
 
 Open `sample/rtems-payload.yaml` and verify that the target executable listed under `payloads:` matches your compiled RTEMS ELF file (`ticker`).
+
+> **Note:** This is a sample payload.yaml & ticker.elf script for example purposes 
+
+```bash
+# ==============================================================================
+# HSS Payload Configuration - RTEMS Application
+# ==============================================================================
+
+set-name: 'PolarFire-SoC-HSS::RTEMS'
+
+hart-entry-points: {
+  u54_1: '0x1000000000',
+  u54_2: '0x1000000000',
+  u54_3: '0x1000000000',
+  u54_4: '0x1000000000'
+}
+
+payloads:
+  ticker: {
+    exec-addr: '0x1000000000',
+    owner-hart: u54_1,
+    secondary-hart: u54_2,
+    secondary-hart: u54_3,
+    secondary-hart: u54_4,
+    priv-mode: prv_m,
+    skip-opensbi: true
+  }
+```
 
 ### Step 4: Generate the Boot Image (`payload.bin`)
 
