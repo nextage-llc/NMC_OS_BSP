@@ -21,7 +21,6 @@ MPFS_NMC_OS/
 Ensure the xPack GNU RISC-V Embedded GCC toolchain (v15.2.0 or compatible) is installed and available in your system path:
 
 ```bash
-export PATH=$PATH:/path/to/xpack-riscv-none-elf-gcc/bin
 riscv-none-elf-gcc --version
 ```
 
@@ -43,7 +42,7 @@ To compile the Hart Software Services eNVM wrapper binary (`hss-envm-wrapper-bm1
    cd MPFS_NMC_OS/hart-software-services
    ```
 
-2. Configure the target board build environment (using the NMC board configuration):
+2. Launch the interactive command-line Kconfig generator to configure target board options (NMC2v3):
 
    ```bash
    make BOARD=NMC2v3 config
