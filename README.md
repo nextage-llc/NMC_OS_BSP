@@ -42,7 +42,7 @@ To compile the Hart Software Services eNVM wrapper binary (`hss-envm-wrapper-bm1
    cd MPFS_NMC_OS/hart-software-services
    ```
 
-2. Launch the interactive command-line Kconfig generator to configure target board options (NMC2v3):
+2. Launch the interactive command-line Kconfig generator to configure target board options (example: NMC2v3):
 
    ```bash
    make BOARD=NMC2v3 config
