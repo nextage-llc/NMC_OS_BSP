@@ -13,12 +13,12 @@ mpfs-nmc-linux-bsp/
 │   └── mpfs-nmc-uboot.dts      # U-Boot device tree source
 ├── linux/
 │   ├── .config                 # Linux kernel configuration
-│   └── mpfs-nmc-linux.dts      # Linux kernel device tree source
+│   └── mpfs-nmc-linux.dts      # Linux device tree source
 ├── buildroot/
 │   └── .config                 # Buildroot configuration
 └── sample/
-    ├── payload.bin              # Sample HSS-wrapped U-Boot image
-    └── README.md                 # Link to the full sample Linux image (GitHub Release)
+    ├── payload.bin             # Sample HSS-wrapped U-Boot image
+    └── README.md               # Link to the full sample Linux image (GitHub Release)
 ```
 
 ---
@@ -53,9 +53,9 @@ Then add this BSP to the same workspace. If you have it as a `.zip`, extract it 
 cp -r /mnt/c/Users/<you>/Downloads/mpfs-nmc-linux-bsp ~/NMC-Linux/
 ```
 
-> Your Windows drive is mounted under `/mnt/c/` in WSL2 — adjust the path above to wherever you extracted the zip. If you already copied the `.zip` itself into WSL, `unzip mpfs-nmc-linux-bsp.zip -d ~/NMC-Linux/` works too.
+> Your Windows drive is mounted under `/mnt/c/` in WSL2. Adjust the path above to wherever you extracted the zip. If you already copied the `.zip` itself into WSL, `unzip mpfs-nmc-linux-bsp.zip -d ~/NMC-Linux/` works too.
 >
-> Ensure none of your shell environment variables contain stray spaces, tabs, or newlines — Buildroot is picky about this.
+> Ensure none of your shell environment variables contain stray spaces, tabs, or newlines (Buildroot is picky about this).
 
 ### Step 3: Build the Baseline Icicle Kit Image
 
@@ -84,7 +84,6 @@ cp ~/NMC-Linux/mpfs-nmc-linux-bsp/linux/.config output/build/linux-custom/.confi
 # Overwrite DTS files in the build trees
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/uboot/mpfs-nmc-uboot.dts \
    output/build/uboot-custom/dts/upstream/src/riscv/microchip/mpfs-icicle-kit.dts
-
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/linux/mpfs-nmc-linux.dts \
    output/build/linux-custom/arch/riscv/boot/dts/microchip/mpfs-icicle-kit.dts
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/linux/mpfs-nmc-linux.dts \
@@ -200,7 +199,6 @@ Or type `boot` (or power cycle the board) once U-Boot is configured to load from
 ### Login
 
 ```text
-login: root
 password: root
 ```
 

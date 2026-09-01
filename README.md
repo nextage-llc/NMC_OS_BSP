@@ -105,6 +105,6 @@ dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
 
 ## 5. Linux (Buildroot) Path
 
-Sections 1–4 above cover the RTEMS boot path. The Linux boot path is built entirely differently — via [`buildroot-external-microchip`](https://github.com/linux4microchip/buildroot-external-microchip) layered on top of upstream Buildroot, run inside WSL2/Ubuntu 22.04 — rather than the xPack toolchain and HSS repo used above.
+Sections 1–4 above cover the RTEMS boot path. The Linux boot path is built entirely differently via [`buildroot-external-microchip`](https://github.com/linux4microchip/buildroot-external-microchip) layered on top of upstream Buildroot, run inside WSL2/Ubuntu 22.04 rather than the xPack toolchain and HSS repo used above.
 
 For environment setup, applying the NMC device tree/config overlay, building images, and flashing instructions, see [`mpfs-nmc-linux-bsp/README.md`](./mpfs-nmc-linux-bsp/README.md).
