@@ -4,6 +4,8 @@
 
 This workspace contains source repositories, toolchains, and build scripts for generating internal infrastructure binaries, bootloaders, and BSP tools for the PolarFire SoC NMC platform.
 
+The NMC board supports two boot targets — **RTEMS** and **Linux**. Each target has its own distributed BSP repo.
+
 ---
 
 ## Directory Structure
@@ -11,7 +13,8 @@ This workspace contains source repositories, toolchains, and build scripts for g
 ```text
 MPFS_NMC_OS/
 ├── hart-software-services/     # Microchip HSS source code repository
-└── mpfs-nmc-rtems-bsp/         # Distributed RTEMS Board Support Package
+├── mpfs-nmc-rtems-bsp/         # Distributed RTEMS Board Support Package
+└── mpfs-nmc-linux-bsp/         # Distributed Linux (Buildroot) Board Support Package
 ```
 
 ---
@@ -21,6 +24,7 @@ MPFS_NMC_OS/
 Ensure the xPack GNU RISC-V Embedded GCC toolchain (v15.2.0 or compatible) is installed and available in your system path:
 
 ```bash
+export PATH=$PATH:/path/to/xpack-riscv-none-elf-gcc/bin
 riscv-none-elf-gcc --version
 ```
 
@@ -29,6 +33,8 @@ Install host build tools:
 ```bash
 sudo apt update && sudo apt install -y build-essential device-tree-compiler libyaml-dev libelf-dev libssl-dev
 ```
+
+> The Linux boot path (`mpfs-nmc-linux-bsp`) has its own, separate environment requirements (WSL2/Ubuntu 22.04 + Buildroot dependencies) — see that repo's README rather than this section.
 
 ---
 
@@ -94,3 +100,11 @@ If device tree sources (`.dts`) are modified:
 cd MPFS_NMC_OS/mpfs-nmc-rtems-bsp
 dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
 ```
+
+---
+
+## 5. Linux (Buildroot) Path
+
+Sections 1–4 above cover the RTEMS boot path. The Linux boot path is built entirely differently — via [`buildroot-external-microchip`](https://github.com/linux4microchip/buildroot-external-microchip) layered on top of upstream Buildroot, run inside WSL2/Ubuntu 22.04 — rather than the xPack toolchain and HSS repo used above.
+
+For environment setup, applying the NMC device tree/config overlay, building images, and flashing instructions, see [`mpfs-nmc-linux-bsp/README.md`](./mpfs-nmc-linux-bsp/README.md).

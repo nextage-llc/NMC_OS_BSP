@@ -1,0 +1,208 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/* Written by Ryan Nguyen / Andrew Carton 2026 */
+
+/dts-v1/;
+
+#include "mpfs.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "Microchip PolarFire-SoC NMC Board";
+	compatible = "microchip,mpfs-custom-mss", "microchip,mpfs";
+
+	aliases {
+		ethernet0 = &mac0;
+		ethernet1 = &mac1;
+		serial0 = &mmuart0;
+		serial1 = &mmuart1;
+		i2c1 = &i2c1;
+		can0 = &can1;
+		mmc0 = &mmc;
+		spi0 = &spi0;
+	};
+
+	chosen {
+		bootph-pre-ram;
+		stdout-path = "serial1:115200n8";
+		/* Automatically load the ITB image to 0x84000000 and boot */
+		u-boot,bootcmd = "fatload mmc 0:2 0x84000000 mpfs_icicle.itb; bootm 0x84000000";
+	};
+
+	/* Fixed Reference Clock for CCC */
+	refclk_ccc: cccrefclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <50000000>;
+	};
+
+	/* Match the 768 MB range configured in Libero */
+	ddrc_cache_lo: memory@80000000 {
+		device_type = "memory";
+		reg = <0x0 0x80000000 0x0 0x30000000>;
+		status = "okay";
+	};
+
+	/* Disable 16GB High Cached region */
+	ddrc_cache_hi: memory@1000000000 {
+		status = "disabled";
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* Put HSS payload near the top of the 768MB region (0xAF800000) */
+		hss_payload: region@af800000 {
+			reg = <0x0 0xaf800000 0x0 0x800000>;
+			no-map;
+		};
+	};
+};
+
+/* Explicit Reference Clocks */
+&refclk {
+	clock-frequency = <125000000>;
+};
+
+&ccc_nw {
+	clocks = <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>,
+		 <&refclk_ccc>, <&refclk_ccc>;
+	clock-names = "pll0_ref0", "pll0_ref1", "pll1_ref0", "pll1_ref1",
+		      "dll0_ref", "dll1_ref";
+	status = "okay";
+};
+
+/* System Controller & Mailbox Hardware Interface */
+&mbox {
+	status = "okay";
+};
+
+&syscontroller {
+	status = "okay";
+};
+
+/* Serial Controllers */
+&mmuart0 { 
+	status = "disabled"; 
+};
+
+&mmuart1 {
+	bootph-pre-ram;
+	u-boot,dm-pre-reloc;
+	status = "okay";
+};
+
+&mmuart2 { status = "okay"; };
+&mmuart4 { status = "okay"; };
+
+/* eMMC Storage */
+&mmc {
+	bus-width = <4>;
+	disable-wp;
+	cap-sd-highspeed;
+	cap-mmc-highspeed;
+	mmc-ddr-1_8v;
+	mmc-hs200-1_8v;
+	sd-uhs-sdr12;
+	sd-uhs-sdr25;
+	sd-uhs-sdr50;
+	sd-uhs-sdr104;
+	status = "okay";
+};
+
+/* GPIO Controllers */
+&gpio0 { status = "okay"; };
+&gpio1 { status = "okay"; };
+
+/* GPIO2 - Drive both PHY Reset lines HIGH */
+&gpio2 {
+	status = "okay";
+	u-boot,dm-pre-reloc;
+
+	vsc8662_nreset {
+		u-boot,dm-pre-reloc;
+		gpio-hog;
+		gpios = <0 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "vsc8662-nreset";
+	};
+
+	vsc8662_snreset {
+		u-boot,dm-pre-reloc;
+		gpio-hog;
+		gpios = <1 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "vsc8662-snreset";
+	};
+};
+
+/* Active SPI 0 Interface */
+&spi0 {
+	status = "okay";
+};
+
+/* Disable Peripherals Not Present on Board */
+&i2c0 { status = "disabled"; };
+&can0 { status = "disabled"; };
+&spi1 { status = "disabled"; };
+&mmuart3 { status = "disabled"; };
+&usb { status = "disabled"; };
+
+/* I2C1 with u-blox GPS mapping */
+&i2c1 {
+	status = "okay";
+	clock-frequency = <400000>;
+
+	gps_timer@42 {
+		compatible = "u-blox,lea-f9t", "generic-i2c-device";
+		reg = <0x42>;
+	};
+};
+
+/* CAN1 Active */
+&can1 {
+	status = "okay";
+};
+
+/* MAC 0 Shared MDIO and PHY Configuration */
+&mac0 {
+	status = "okay";
+	phy-mode = "sgmii";
+	phy-handle = <&phy0>;
+
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		phy0: ethernet-phy@8 {
+			reg = <8>;
+			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+		};
+
+		phy1: ethernet-phy@9 {
+			reg = <9>;
+			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+		};
+	};
+};
+
+/* MAC 1 Data Plane */
+&mac1 {
+	status = "okay";
+	phy-mode = "sgmii";
+	phy-handle = <&phy1>;
+};
+
+/* Active QSPI Flash */
+&qspi {
+	status = "okay";
+	flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <102000000>;
+		spi-tx-bus-width = <4>;
+		spi-rx-bus-width = <4>;
+		status = "okay";
+	};
+};

@@ -1,0 +1,185 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/* Written by Ryan Nguyen | Andrew Carton 8/12/26 */
+
+/dts-v1/;
+
+#include "mpfs.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "Microchip PolarFire-SoC NMC Board";
+	compatible = "microchip,mpfs-custom-mss", "microchip,mpfs";
+
+	aliases {
+		ethernet0 = &mac0;
+		ethernet1 = &mac1;
+		serial0 = &mmuart0;
+		serial1 = &mmuart1;
+		serial2 = &mmuart2;
+		serial4 = &mmuart4;
+		i2c1 = &i2c1;
+		can0 = &can1;
+		mmc0 = &mmc;
+		spi0 = &spi0;
+	};
+
+	chosen {
+		/* Enforce console explicitly on ttyS1 (MMUART1) while passing earlycon */
+		bootargs = "console=ttyS1,115200n8 earlycon=mmuart,mmio32,0x20102000 root=/dev/mmcblk0p3 rootwait rw";
+		stdout-path = "serial1:115200n8";
+	};
+
+	/* Required base reference clock for CCC / Clocks */
+	refclk_ccc: cccrefclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <50000000>;
+	};
+
+	/* Match the 768 MB range configured in Libero */
+	ddrc_cache_lo: memory@80000000 {
+		device_type = "memory";
+		reg = <0x0 0x80000000 0x0 0x30000000>;
+		status = "okay";
+	};
+
+	/* Disable 16GB High Cached region */
+	ddrc_cache_hi: memory@1000000000 {
+		status = "disabled";
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* HSS payload reservation at top of 768MB region (0xAF800000) */
+		hss_payload: region@af800000 {
+			reg = <0x0 0xaf800000 0x0 0x800000>;
+			no-map;
+		};
+	};
+};
+
+/* Core SoC Reference Clocks */
+&refclk { 
+	clock-frequency = <125000000>; 
+};
+
+&ccc_nw {
+	clocks = <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>,
+		 <&refclk_ccc>, <&refclk_ccc>;
+	clock-names = "pll0_ref0", "pll0_ref1", "pll1_ref0", "pll1_ref1",
+		      "dll0_ref", "dll1_ref";
+	status = "okay";
+};
+
+/* Hardware MSS UART Configuration */
+&mmuart0 { status = "okay"; };
+&mmuart1 { status = "okay"; };     /* Main Console */
+&mmuart2 { status = "okay"; };
+&mmuart3 { status = "disabled"; };
+&mmuart4 { status = "okay"; };
+
+/* eMMC Storage */
+&mmc {
+	bus-width = <4>;
+	disable-wp;
+	cap-sd-highspeed;
+	cap-mmc-highspeed;
+	mmc-ddr-1_8v;
+	mmc-hs200-1_8v;
+	sd-uhs-sdr12;
+	sd-uhs-sdr25;
+	sd-uhs-sdr50;
+	sd-uhs-sdr104;
+	status = "okay";
+};
+
+&mbox {
+	status = "okay";
+};
+
+&syscontroller {
+	status = "okay";
+};
+
+/* Active QSPI Flash */
+&qspi {
+	status = "okay";
+	flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <102000000>;
+		spi-tx-bus-width = <4>;
+		spi-rx-bus-width = <4>;
+		status = "okay";
+	};
+};
+
+&gpio0 { status = "okay"; };
+&gpio1 { status = "okay"; };
+&gpio2 { status = "okay"; };
+&i2c0 { status = "disabled"; };
+
+/* I2C1 with u-blox GPS mapping */
+&i2c1 {
+	status = "okay";
+	clock-frequency = <400000>;
+
+	gps_timer@42 {
+		compatible = "u-blox,lea-f9t", "generic-i2c-device";
+		reg = <0x42>;
+	};
+};
+
+&can0 { status = "disabled"; };
+
+/* CAN1 Active */
+&can1 {
+	status = "okay";
+};
+
+&spi0 {
+	status = "okay";
+};
+
+&spi1 { status = "disabled"; };
+&usb { status = "disabled"; };
+
+/* MAC 0 Shared MDIO and PHY Configuration */
+&mac0 {
+	status = "okay";
+	phy-mode = "sgmii";
+	phy-handle = <&phy0>;
+
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		phy0: ethernet-phy@8 {
+			reg = <8>;
+			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+			/* Native Linux PHY Reset Handling (Replaces GPIO Hog) */
+			reset-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <10000>;
+			reset-deassert-us = <20000>;
+		};
+
+		phy1: ethernet-phy@9 {
+			reg = <9>;
+			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+			/* Native Linux PHY Reset Handling (Replaces GPIO Hog) */
+			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <10000>;
+			reset-deassert-us = <20000>;
+		};
+	};
+};
+
+/* MAC 1 Data Plane */
+&mac1 {
+	status = "okay";
+	phy-mode = "sgmii";
+	phy-handle = <&phy1>;
+};
