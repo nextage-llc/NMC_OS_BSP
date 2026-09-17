@@ -34,9 +34,9 @@ extern  "C" {
 
 #if !defined (LIBERO_SETTING_DPC_BITS)
 /*DPC Bits Register */
-#define LIBERO_SETTING_DPC_BITS    0x00050422UL
-    /* DPC_VS                            [0:4]   RW value= 0x2 */
-    /* DPC_VRGEN_H                       [4:6]   RW value= 0x2 */
+#define LIBERO_SETTING_DPC_BITS    0x00050583UL
+    /* DPC_VS                            [0:4]   RW value= 0x3 */
+    /* DPC_VRGEN_H                       [4:6]   RW value= 0x18 */
     /* DPC_VRGEN_EN_H                    [10:1]  RW value= 0x1 */
     /* DPC_MOVE_EN_H                     [11:1]  RW value= 0x0 */
     /* DPC_VRGEN_V                       [12:6]  RW value= 0x10 */
@@ -47,14 +47,14 @@ extern  "C" {
 #if !defined (LIBERO_SETTING_RPC_ODT_DQ)
 /*Need to be set by software in all modes but OFF mode. Decoding options should
 follow ODT_STR table, depends on drive STR setting */
-#define LIBERO_SETTING_RPC_ODT_DQ    0x00000003UL
-    /* RPC_ODT_DQ                        [0:32]  RW value= 0x3 */
+#define LIBERO_SETTING_RPC_ODT_DQ    0x00000004UL
+    /* RPC_ODT_DQ                        [0:32]  RW value= 0x4 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_ODT_DQS)
 /*Need to be set by software in all modes but OFF mode. Decoding options should
 follow ODT_STR table, depends on drive STR setting */
-#define LIBERO_SETTING_RPC_ODT_DQS    0x00000006UL
-    /* RPC_ODT_DQS                       [0:32]  RW value= 0x6 */
+#define LIBERO_SETTING_RPC_ODT_DQS    0x00000004UL
+    /* RPC_ODT_DQS                       [0:32]  RW value= 0x4 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_ODT_ADDCMD)
 /*Need to be set by software in all modes but OFF mode. Decoding options should
@@ -70,13 +70,13 @@ follow ODT_STR table, depends on drive STR setting */
 #endif
 #if !defined (LIBERO_SETTING_RPC_ODT_STATIC_DQ)
 /*0x2000 73A8 (rpc10_ODT) */
-#define LIBERO_SETTING_RPC_ODT_STATIC_DQ    0x00000005UL
-    /* RPC_ODT_STATIC_DQ                 [0:32]  RW value= 0x5 */
+#define LIBERO_SETTING_RPC_ODT_STATIC_DQ    0x00000006UL
+    /* RPC_ODT_STATIC_DQ                 [0:32]  RW value= 0x6 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_ODT_STATIC_DQS)
 /*0x2000 73AC (rpc11_ODT) */
-#define LIBERO_SETTING_RPC_ODT_STATIC_DQS    0x00000005UL
-    /* RPC_ODT_STATIC_DQS                [0:32]  RW value= 0x5 */
+#define LIBERO_SETTING_RPC_ODT_STATIC_DQS    0x00000006UL
+    /* RPC_ODT_STATIC_DQS                [0:32]  RW value= 0x6 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_ODT_STATIC_ADDCMD)
 /*0x2000 739C (rpc7_ODT) */
@@ -116,13 +116,13 @@ follow ODT_STR table, depends on drive STR setting */
 #if !defined (LIBERO_SETTING_RPC_SPARE0_DQ)
 /*bits 15:14 connect to pc_ibufmx DQ/DQS/DM bits 13:12 connect to pc_ibufmx
 CA/CK Check at ioa pc bit */
-#define LIBERO_SETTING_RPC_SPARE0_DQ    0x00008000UL
-    /* RPC_SPARE0_DQ                     [0:32]  RW value= 0x8000 */
+#define LIBERO_SETTING_RPC_SPARE0_DQ    0x00000000UL
+    /* RPC_SPARE0_DQ                     [0:32]  RW value= 0x0 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_ADDCMD0_OVRT9)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_ADDCMD0_OVRT9    0x00000F00UL
+#define LIBERO_SETTING_RPC_EN_ADDCMD0_OVRT9    0x00000000UL
     /* MSS_DDR_CK0                       [0:1]   RW value= 0x0 */
     /* MSS_DDR_CK_N0                     [1:1]   RW value= 0x0 */
     /* MSS_DDR_A0                        [2:1]   RW value= 0x0 */
@@ -131,49 +131,49 @@ to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
     /* MSS_DDR_A3                        [5:1]   RW value= 0x0 */
     /* MSS_DDR_A4                        [6:1]   RW value= 0x0 */
     /* MSS_DDR_A5                        [7:1]   RW value= 0x0 */
-    /* MSS_DDR_A6                        [8:1]   RW value= 0x1 */
-    /* MSS_DDR_A7                        [9:1]   RW value= 0x1 */
-    /* MSS_DDR_A8                        [10:1]  RW value= 0x1 */
-    /* MSS_DDR_A9                        [11:1]  RW value= 0x1 */
+    /* MSS_DDR_A6                        [8:1]   RW value= 0x0 */
+    /* MSS_DDR_A7                        [9:1]   RW value= 0x0 */
+    /* MSS_DDR_A8                        [10:1]  RW value= 0x0 */
+    /* MSS_DDR_A9                        [11:1]  RW value= 0x0 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_ADDCMD1_OVRT10)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_ADDCMD1_OVRT10    0x00000FFFUL
+#define LIBERO_SETTING_RPC_EN_ADDCMD1_OVRT10    0x00000003UL
     /* MSS_DDR_CK1                       [0:1]   RW value= 0x1 */
     /* MSS_DDR_CK_N1                     [1:1]   RW value= 0x1 */
-    /* MSS_DDR_A10                       [2:1]   RW value= 0x1 */
-    /* MSS_DDR_A11                       [3:1]   RW value= 0x1 */
-    /* MSS_DDR_A12                       [4:1]   RW value= 0x1 */
-    /* MSS_DDR_A13                       [5:1]   RW value= 0x1 */
-    /* MSS_DDR_A14                       [6:1]   RW value= 0x1 */
-    /* MSS_DDR_A15                       [7:1]   RW value= 0x1 */
-    /* MSS_DDR_A16                       [8:1]   RW value= 0x1 */
-    /* MSS_DDR3_WE_N                     [9:1]   RW value= 0x1 */
-    /* MSS_DDR_BA0                       [10:1]  RW value= 0x1 */
-    /* MSS_DDR_BA1                       [11:1]  RW value= 0x1 */
+    /* MSS_DDR_A10                       [2:1]   RW value= 0x0 */
+    /* MSS_DDR_A11                       [3:1]   RW value= 0x0 */
+    /* MSS_DDR_A12                       [4:1]   RW value= 0x0 */
+    /* MSS_DDR_A13                       [5:1]   RW value= 0x0 */
+    /* MSS_DDR_A14                       [6:1]   RW value= 0x0 */
+    /* MSS_DDR_A15                       [7:1]   RW value= 0x0 */
+    /* MSS_DDR_A16                       [8:1]   RW value= 0x0 */
+    /* MSS_DDR3_WE_N                     [9:1]   RW value= 0x0 */
+    /* MSS_DDR_BA0                       [10:1]  RW value= 0x0 */
+    /* MSS_DDR_BA1                       [11:1]  RW value= 0x0 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_ADDCMD2_OVRT11)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_ADDCMD2_OVRT11    0x00000FE6UL
+#define LIBERO_SETTING_RPC_EN_ADDCMD2_OVRT11    0x00000DC4UL
     /* MSS_DDR_RAM_RST_N                 [0:1]   RW value= 0x0 */
-    /* MSS_DDR_BG0                       [1:1]   RW value= 0x1 */
+    /* MSS_DDR_BG0                       [1:1]   RW value= 0x0 */
     /* MSS_DDR_BG1                       [2:1]   RW value= 0x1 */
     /* MSS_DDR_CS0                       [3:1]   RW value= 0x0 */
     /* MSS_DDR_CKE0                      [4:1]   RW value= 0x0 */
-    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x1 */
+    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x0 */
     /* MSS_DDR_CS1                       [6:1]   RW value= 0x1 */
     /* MSS_DDR_CKE1                      [7:1]   RW value= 0x1 */
     /* MSS_DDR_ODT1                      [8:1]   RW value= 0x1 */
-    /* MSS_DDR_ACT_N                     [9:1]   RW value= 0x1 */
+    /* MSS_DDR_ACT_N                     [9:1]   RW value= 0x0 */
     /* MSS_DDR_PARITY                    [10:1]  RW value= 0x1 */
     /* MSS_DDR_ALERT_N                   [11:1]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_DATA0_OVRT12)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_DATA0_OVRT12    0x00000000UL
+#define LIBERO_SETTING_RPC_EN_DATA0_OVRT12    0x00000400UL
     /* MSS_DDR_DQ0                       [0:1]   RW value= 0x0 */
     /* MSS_DDR_DQ1                       [1:1]   RW value= 0x0 */
     /* MSS_DDR_DQ2                       [2:1]   RW value= 0x0 */
@@ -184,12 +184,12 @@ to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
     /* MSS_DDR_DQ5                       [7:1]   RW value= 0x0 */
     /* MSS_DDR_DQ6                       [8:1]   RW value= 0x0 */
     /* MSS_DDR_DQ7                       [9:1]   RW value= 0x0 */
-    /* MSS_DDR_DM0                       [10:1]  RW value= 0x0 */
+    /* MSS_DDR_DM0                       [10:1]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_DATA1_OVRT13)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_DATA1_OVRT13    0x00000000UL
+#define LIBERO_SETTING_RPC_EN_DATA1_OVRT13    0x00000400UL
     /* MSS_DDR_DQ8                       [0:1]   RW value= 0x0 */
     /* MSS_DDR_DQ9                       [1:1]   RW value= 0x0 */
     /* MSS_DDR_DQ10                      [2:1]   RW value= 0x0 */
@@ -200,39 +200,39 @@ to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
     /* MSS_DDR_DQ13                      [7:1]   RW value= 0x0 */
     /* MSS_DDR_DQ14                      [8:1]   RW value= 0x0 */
     /* MSS_DDR_DQ15                      [9:1]   RW value= 0x0 */
-    /* MSS_DDR_DM1                       [10:1]  RW value= 0x0 */
+    /* MSS_DDR_DM1                       [10:1]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_DATA2_OVRT14)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_DATA2_OVRT14    0x00000000UL
-    /* MSS_DDR_DQ16                      [0:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ17                      [1:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ18                      [2:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ19                      [3:1]   RW value= 0x0 */
-    /* MSS_DDR_DQS_P2                    [4:1]   RW value= 0x0 */
-    /* MSS_DDR_DQS_N2                    [5:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ20                      [6:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ21                      [7:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ22                      [8:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ23                      [9:1]   RW value= 0x0 */
-    /* MSS_DDR_DM2                       [10:1]  RW value= 0x0 */
+#define LIBERO_SETTING_RPC_EN_DATA2_OVRT14    0x000007FFUL
+    /* MSS_DDR_DQ16                      [0:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ17                      [1:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ18                      [2:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ19                      [3:1]   RW value= 0x1 */
+    /* MSS_DDR_DQS_P2                    [4:1]   RW value= 0x1 */
+    /* MSS_DDR_DQS_N2                    [5:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ20                      [6:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ21                      [7:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ22                      [8:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ23                      [9:1]   RW value= 0x1 */
+    /* MSS_DDR_DM2                       [10:1]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_DATA3_OVRT15)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
 to an IO in corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC_EN_DATA3_OVRT15    0x00000000UL
-    /* MSS_DDR_DQ24                      [0:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ25                      [1:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ26                      [2:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ27                      [3:1]   RW value= 0x0 */
-    /* MSS_DDR_DQS_P3                    [4:1]   RW value= 0x0 */
-    /* MSS_DDR_DQS_N3                    [5:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ28                      [6:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ29                      [7:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ30                      [8:1]   RW value= 0x0 */
-    /* MSS_DDR_DQ31                      [9:1]   RW value= 0x0 */
-    /* MSS_DDR_DM3                       [10:1]  RW value= 0x0 */
+#define LIBERO_SETTING_RPC_EN_DATA3_OVRT15    0x000007FFUL
+    /* MSS_DDR_DQ24                      [0:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ25                      [1:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ26                      [2:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ27                      [3:1]   RW value= 0x1 */
+    /* MSS_DDR_DQS_P3                    [4:1]   RW value= 0x1 */
+    /* MSS_DDR_DQS_N3                    [5:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ28                      [6:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ29                      [7:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ30                      [8:1]   RW value= 0x1 */
+    /* MSS_DDR_DQ31                      [9:1]   RW value= 0x1 */
+    /* MSS_DDR_DM3                       [10:1]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_RPC_EN_ECC_OVRT16)
 /*Overrides the I/O, used to disable specific DDR I/0. Each bit corresponding
@@ -285,16 +285,16 @@ corresponding IOG lane, starting from p_pair0 to n_pair5. */
 corresponding IOG lane, starting from p_pair0 to n_pair5. Note: For LPDDR4 need
 to over-ride MSS_DDR_ODT0 and MSS_DDR_ODT1 and eanble PU i.e. (set OVR_EN ==1 ,
 wpu == 0 , wpd == 1 ) */
-#define LIBERO_SETTING_RPC237_WPD_ADD_CMD2    0x00000120UL
+#define LIBERO_SETTING_RPC237_WPD_ADD_CMD2    0x00000000UL
     /* MSS_DDR_RAM_RST_N                 [0:1]   RW value= 0x0 */
     /* MSS_DDR_BG0                       [1:1]   RW value= 0x0 */
     /* MSS_DDR_BG1                       [2:1]   RW value= 0x0 */
     /* MSS_DDR_CS0                       [3:1]   RW value= 0x0 */
     /* MSS_DDR_CKE0                      [4:1]   RW value= 0x0 */
-    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x1 */
+    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x0 */
     /* MSS_DDR_CS1                       [6:1]   RW value= 0x0 */
     /* MSS_DDR_CKE1                      [7:1]   RW value= 0x0 */
-    /* MSS_DDR_ODT1                      [8:1]   RW value= 0x1 */
+    /* MSS_DDR_ODT1                      [8:1]   RW value= 0x0 */
     /* MSS_DDR_ACT_N                     [9:1]   RW value= 0x0 */
     /* MSS_DDR_PARITY                    [10:1]  RW value= 0x0 */
     /* MSS_DDR_ALERT_N                   [11:1]  RW value= 0x0 */
@@ -412,16 +412,16 @@ corresponding IOG lane, starting from p_pair0 to n_pair5. */
 #if !defined (LIBERO_SETTING_RPC245_WPU_ADD_CMD2)
 /*Sets pull-ups when override enabled. Each bit corresponding to an IO in
 corresponding IOG lane, starting from p_pair0 to n_pair5. */
-#define LIBERO_SETTING_RPC245_WPU_ADD_CMD2    0x00000EDFUL
+#define LIBERO_SETTING_RPC245_WPU_ADD_CMD2    0x00000FFFUL
     /* MSS_DDR_RAM_RST_N                 [0:1]   RW value= 0x1 */
     /* MSS_DDR_BG0                       [1:1]   RW value= 0x1 */
     /* MSS_DDR_BG1                       [2:1]   RW value= 0x1 */
     /* MSS_DDR_CS0                       [3:1]   RW value= 0x1 */
     /* MSS_DDR_CKE0                      [4:1]   RW value= 0x1 */
-    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x0 */
+    /* MSS_DDR_ODT0                      [5:1]   RW value= 0x1 */
     /* MSS_DDR_CS1                       [6:1]   RW value= 0x1 */
     /* MSS_DDR_CKE1                      [7:1]   RW value= 0x1 */
-    /* MSS_DDR_ODT1                      [8:1]   RW value= 0x0 */
+    /* MSS_DDR_ODT1                      [8:1]   RW value= 0x1 */
     /* MSS_DDR_ACT_N                     [9:1]   RW value= 0x1 */
     /* MSS_DDR_PARITY                    [10:1]  RW value= 0x1 */
     /* MSS_DDR_ALERT_N                   [11:1]  RW value= 0x1 */

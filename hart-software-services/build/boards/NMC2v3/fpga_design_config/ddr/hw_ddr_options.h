@@ -55,9 +55,9 @@ These burn static power.(0x01 => turn off ; 0x00 => no action ) */
 #endif
 #if !defined (LIBERO_SETTING_TIP_CFG_PARAMS)
 /*Tip config: default: 0x2,0x4,0x0,0x1F,0x1F */
-#define LIBERO_SETTING_TIP_CFG_PARAMS    0x07CFE02FUL
-    /* ADDCMD_OFFSET                     [0:3]   RW value= 0x7 */
-    /* BCKLSCLK_OFFSET                   [3:3]   RW value= 0x5 */
+#define LIBERO_SETTING_TIP_CFG_PARAMS    0x07CFE003UL
+    /* ADDCMD_OFFSET                     [0:3]   RW value= 0x3 */
+    /* BCKLSCLK_OFFSET                   [3:3]   RW value= 0x0 */
     /* WRCALIB_WRITE_COUNT               [6:7]   RW value= 0x0 */
     /* READ_GATE_MIN_READS               [13:9]  RW value= 0x7F */
     /* ADDRCMD_WAIT_COUNT                [22:9]  RW value= 0x1F */
@@ -331,7 +331,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_0_DEG_DDR4)
 /*Zero degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_0_DEG_DDR4    0x00000000UL
-    /* ZERO_DEGRESS_ORDER                [0:32]  RW value= 0 */
+    /* ZERO_DEGRESS_ORDER                [0:32]  RW value= 0x0 */
 #endif
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_0_DEG_LPDDR3)
 /*Zero degres clock move order */
@@ -341,7 +341,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_0_DEG_LPDDR4)
 /*Zero degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_0_DEG_LPDDR4    0x00000000UL
-    /* ZERO_DEGRESS_ORDER                [0:32]  RW value= 0x0 */
+    /* ZERO_DEGRESS_ORDER                [0:32]  RW value= 0 */
 #endif
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_DDR3)
 /*Forty five degres clock move order */
@@ -356,7 +356,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_DDR4)
 /*Forty five degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_DDR4    0x00000001UL
-    /* FORTY_FIVE_DEGRESS_ORDER          [0:32]  RW value= 1 */
+    /* FORTY_FIVE_DEGRESS_ORDER          [0:32]  RW value= 0x1 */
 #endif
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_LPDDR3)
 /*Forty five degres clock move order */
@@ -366,7 +366,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_LPDDR4)
 /*Forty five degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_45_DEG_LPDDR4    0x00000001UL
-    /* FORTY_FIVE_DEGRESS_ORDER          [0:32]  RW value= 0x1 */
+    /* FORTY_FIVE_DEGRESS_ORDER          [0:32]  RW value= 1 */
 #endif
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_DDR3)
 /*Ninty degres clock move order */
@@ -381,7 +381,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_DDR4)
 /*Ninty degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_DDR4    0x00000002UL
-    /* NINTY_DEGRESS_ORDER               [0:32]  RW value= 2 */
+    /* NINTY_DEGRESS_ORDER               [0:32]  RW value= 0x2 */
 #endif
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_LPDDR3)
 /*Ninty degres clock move order */
@@ -391,7 +391,7 @@ the trace lengths */
 #if !defined (LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_LPDDR4)
 /*Ninty degres clock move order */
 #define LIBERO_SETTING_ADD_CMD_CLK_MOVE_ORDER_90_DEG_LPDDR4    0x00000002UL
-    /* NINTY_DEGRESS_ORDER               [0:32]  RW value= 0x2 */
+    /* NINTY_DEGRESS_ORDER               [0:32]  RW value= 2 */
 #endif
 
 #ifdef __cplusplus
