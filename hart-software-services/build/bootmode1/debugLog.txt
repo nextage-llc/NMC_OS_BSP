@@ -1,29 +1,29 @@
 
-12:27:50 INFO  - Selected boot mode "1 - non-secure boot from eNVM" and working in directory "C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build".
-12:27:50 DEBUG - Workdir=C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build die=MPFS250T_ES diePackage=FCVG484 bm=1 - non-secure boot from eNVM verify=false elf=hss-envm-wrapper.elf
-12:27:50 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe new_project --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --target_die MPFS250T_ES --target_package FCVG484".
-12:27:50 DEBUG - Finished with exit code: "0".
-12:27:50 INFO  - Generating BIN file...
-12:27:50 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe --version".
-12:27:50 DEBUG - Finished with exit code: "0".
-12:27:50 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe -O binary C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/hss-envm-wrapper.elf C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper.bin ".
-12:27:50 DEBUG - Finished with exit code: "0".
-12:27:50 DEBUG - Size of the BIN file is "85520 (decimal)" or "0x00014E10 (hex)".
-12:27:50 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-readelf.exe --program-headers C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/hss-envm-wrapper.elf ".
-12:27:51 DEBUG - Finished with exit code: "0".
-12:27:51 DEBUG - Entry point 0x20220100
-12:27:51 DEBUG - The detected entry address is "20220100".
-12:27:51 INFO  - Generating header...
-12:27:51 INFO  - Generating HEX file...
-12:27:51 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe -I binary -O ihex --change-section-lma *+0x20220000 C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.bin C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.hex ".
-12:27:51 DEBUG - Finished with exit code: "0".
-12:27:51 INFO  - Preparing for bitstream generation...
-12:27:51 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe mss_boot_info --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --u_mss_bootmode 1 --u_mss_bootcfg 2022010020220100202201002022010020220100".
-12:27:51 DEBUG - Finished with exit code: "0".
-12:27:51 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe envm_client --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --number_of_bytes 85776 --content_file_format intel-hex --content_file C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.hex --start_page 0 --client_name bootmode1_0 --mem_file_base_address 20220000".
-12:27:51 DEBUG - Finished with exit code: "0".
-12:27:51 INFO  - Generating bitstream...
-12:27:51 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe generate_bitstream --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject".
-12:27:58 DEBUG - Finished with exit code: "0".
-12:27:58 INFO  - Programming/verifying the target skipped because --dryrun was specified.
-12:27:58 INFO  - mpfsBootmodeProgrammer completed successfully.
+12:54:03 INFO  - Selected boot mode "1 - non-secure boot from eNVM" and working in directory "C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build".
+12:54:03 DEBUG - Workdir=C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build die=MPFS250T_ES diePackage=FCVG484 bm=1 - non-secure boot from eNVM verify=false elf=hss-envm-wrapper.elf
+12:54:03 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe new_project --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --target_die MPFS250T_ES --target_package FCVG484".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 INFO  - Generating BIN file...
+12:54:03 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe --version".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe -O binary C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/hss-envm-wrapper.elf C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper.bin ".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 DEBUG - Size of the BIN file is "85520 (decimal)" or "0x00014E10 (hex)".
+12:54:03 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-readelf.exe --program-headers C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/hss-envm-wrapper.elf ".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 DEBUG - Entry point 0x20220100
+12:54:03 DEBUG - The detected entry address is "20220100".
+12:54:03 INFO  - Generating header...
+12:54:03 INFO  - Generating HEX file...
+12:54:03 DEBUG - Invoking command: "C:/Microchip/SoftConsole-v2022.2-RISC-V-747/riscv-unknown-elf-gcc/bin/riscv64-unknown-elf-objcopy.exe -I binary -O ihex --change-section-lma *+0x20220000 C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.bin C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.hex ".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 INFO  - Preparing for bitstream generation...
+12:54:03 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe mss_boot_info --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --u_mss_bootmode 1 --u_mss_bootcfg 2022010020220100202201002022010020220100".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe envm_client --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject --number_of_bytes 85776 --content_file_format intel-hex --content_file C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/hss-envm-wrapper-bm1-p0.hex --start_page 0 --client_name bootmode1_0 --mem_file_base_address 20220000".
+12:54:03 DEBUG - Finished with exit code: "0".
+12:54:03 INFO  - Generating bitstream...
+12:54:03 DEBUG - Invoking command: "C:\Microchip\Libero_SoC_2025.2\Libero_SoC\Designer\bin64\fpgenprog.exe generate_bitstream --location C:\Users\zsebr\Documents\Nextage_LLC\Project-NMC\MPFS_NMC_OS\hart-software-services\build/bootmode1/fpgenprogProject".
+12:54:11 DEBUG - Finished with exit code: "0".
+12:54:11 INFO  - Programming/verifying the target skipped because --dryrun was specified.
+12:54:11 INFO  - mpfsBootmodeProgrammer completed successfully.
