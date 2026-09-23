@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: (GPL-2.0 OR MIT)
 /* Written by Ryan Nguyen | Andrew Carton 8/12/26 */
+/* Modified by Zein Sebraoui 8/22/26 */
 
 /dts-v1/;
 
@@ -24,8 +25,8 @@
 	};
 
 	chosen {
-		/* Enforce console explicitly on ttyS1 (MMUART1) while passing earlycon */
-		bootargs = "console=ttyS1,115200n8 earlycon=mmuart,mmio32,0x20102000 root=/dev/mmcblk0p3 rootwait rw";
+		/* Console on MMUART1 (ttyS1, Window 2). Bare earlycon follows stdout-path. */
+		bootargs = "console=ttyS1,115200n8 earlycon root=/dev/mmcblk0p3 rootwait rw";
 		stdout-path = "serial1:115200n8";
 	};
 
@@ -57,6 +58,49 @@
 		hss_payload: region@af800000 {
 			reg = <0x0 0xaf800000 0x0 0x800000>;
 			no-map;
+		};
+	};
+};
+
+&{/soc} {
+	pcie: pcie@30e0000000 {
+		compatible = "microchip,pcie-host-1.0";
+		#address-cells = <3>;
+		#size-cells = <2>;
+		#interrupt-cells = <1>;
+		device_type = "pci";
+		reg = <0x30 0xe0000000 0x0 0x08000000>, /* 128MB Config space via FIC1 (64-bit) */
+		      <0x00 0x43000000 0x0 0x00010000>; /* 64KB APB control registers via FIC3 */
+		reg-names = "cfg", "apb";
+		bus-range = <0x00 0x7f>;
+
+		interrupt-parent = <&plic>;
+		interrupts = <119>;
+		interrupt-map = <0 0 0 1 &pcie_intc 0>,
+				<0 0 0 2 &pcie_intc 1>,
+				<0 0 0 3 &pcie_intc 2>,
+				<0 0 0 4 &pcie_intc 3>;
+		interrupt-map-mask = <0 0 0 7>;
+
+		clocks = <&refclk>, <&refclk>, <&refclk>;
+		clock-names = "fic0", "fic1", "fic3";
+
+		/* Outbound Memory Range:
+		   Flags (0x02000000 = 32-bit Mem) | PCI Addr (0xE0000000) | CPU Addr (0x0 0xE0000000) | Size (128MB) */
+		ranges = <0x02000000 0x0 0xe0000000 0x0 0xe0000000 0x0 0x08000000>;
+
+		/* Inbound DMA Range:
+		   Flags (0x02000000) | PCI Addr (0x80000000) | CPU Addr (0x0 0x80000000) | Size (1GB) */
+		dma-ranges = <0x02000000 0x0 0x80000000 0x0 0x80000000 0x0 0x40000000>;
+
+		msi-parent = <&pcie>;
+		msi-controller;
+		status = "disabled";
+
+		pcie_intc: interrupt-controller {
+			#address-cells = <0>;
+			#interrupt-cells = <1>;
+			interrupt-controller;
 		};
 	};
 };
@@ -156,10 +200,11 @@
 	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
+		compatible = "cdns,macb-mdio"; 
 
 		phy0: ethernet-phy@8 {
 			reg = <8>;
-			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+            compatible = "ethernet-phy-id0007.0660", "ethernet-phy-ieee802.3-c22";
 			/* Native Linux PHY Reset Handling (Replaces GPIO Hog) */
 			reset-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
@@ -168,7 +213,7 @@
 
 		phy1: ethernet-phy@9 {
 			reg = <9>;
-			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
+            compatible = "ethernet-phy-id0007.0660", "ethernet-phy-ieee802.3-c22";
 			/* Native Linux PHY Reset Handling (Replaces GPIO Hog) */
 			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;

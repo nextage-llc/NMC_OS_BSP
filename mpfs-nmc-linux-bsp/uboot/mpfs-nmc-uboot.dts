@@ -165,33 +165,33 @@
 	status = "okay";
 };
 
-/* MAC 0 Shared MDIO and PHY Configuration */
+/* MAC 0 (eth0) - Shared MDIO Bus Master */
 &mac0 {
-	status = "okay";
-	phy-mode = "sgmii";
-	phy-handle = <&phy0>;
+    status = "okay";
+    phy-mode = "sgmii";
+    phy-handle = <&phy0>;
 
-	mdio {
-		#address-cells = <1>;
-		#size-cells = <0>;
+    mdio {
+        #address-cells = <1>;
+        #size-cells = <0>;
 
-		phy0: ethernet-phy@8 {
-			reg = <8>;
-			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
-		};
+        phy0: ethernet-phy@8 {
+            reg = <8>;
+            compatible = "ethernet-phy-id0007.0660", "ethernet-phy-ieee802.3-c22";
+        };
 
-		phy1: ethernet-phy@9 {
-			reg = <9>;
-			compatible = "ethernet-phy-id0007.0410", "ethernet-phy-ieee802.3-c22";
-		};
-	};
+        phy1: ethernet-phy@9 {
+            reg = <9>;
+            compatible = "ethernet-phy-id0007.0660", "ethernet-phy-ieee802.3-c22";
+        };
+    };
 };
 
-/* MAC 1 Data Plane */
+/* MAC 1 (eth1) - References phy1 on mac0's MDIO bus */
 &mac1 {
-	status = "okay";
-	phy-mode = "sgmii";
-	phy-handle = <&phy1>;
+    status = "okay";
+    phy-mode = "sgmii"; /* Ensure mode matches mac0 / schematic */
+    phy-handle = <&phy1>;
 };
 
 /* Active QSPI Flash */

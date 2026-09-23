@@ -36,7 +36,7 @@ sudo apt-get install subversion build-essential bison flex gettext \
   wget cpio rsync xxd bmap-tools libgnutls28-dev libgl1
 ```
 
-> **Note:** Do all cloning/building inside the Linux filesystem (e.g. `~/NMC-Linux`), not under `/mnt/c/...` — building on the Windows-mounted filesystem in WSL2 is dramatically slower and can cause path issues.
+> **Note:** Do all cloning/building inside the Linux filesystem (e.g. `~/NMC-Linux`), not under `/mnt/c/...` - building on the Windows-mounted filesystem in WSL2 is dramatically slower and can cause path issues.
 
 ### Step 2: Set Up Your Workspace
 
@@ -73,10 +73,10 @@ make
 
 Copy this repo's configs and DTS files into the Buildroot output tree, then rebuild. Run all commands from `~/NMC-Linux/buildroot`:
 
-> **Note:** `output/build/uboot-custom/` and `output/build/linux-custom/` are only created once Step 3 has completed — run this step after that build finishes, or the `cp` commands below will fail.
+> **Note:** `output/build/uboot-custom/` and `output/build/linux-custom/` are only created once Step 3 has completed - run this step after that build finishes, or the `cp` commands below will fail.
 
 ```bash
-# Apply configs — each keeps its native filename
+# Apply configs - each keeps its native filename
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/buildroot/.config .config
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/uboot/.config output/build/uboot-custom/.config
 cp ~/NMC-Linux/mpfs-nmc-linux-bsp/linux/.config output/build/linux-custom/.config
