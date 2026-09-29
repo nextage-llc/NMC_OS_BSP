@@ -237,8 +237,8 @@ IOMUX structure */
 #endif
 #if !defined (LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_10_11_CR)
 /*IO electrical configuration for MSSIO pad */
-#define LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_10_11_CR    0x08290029UL
-    /* IO_CFG_10                         [0:16]  RW value= 0x0029 */
+#define LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_10_11_CR    0x08290829UL
+    /* IO_CFG_10                         [0:16]  RW value= 0x0829 */
     /* IO_CFG_11                         [16:16] RW value= 0x0829 */
 #endif
 #if !defined (LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_12_13_CR)
@@ -273,9 +273,9 @@ IOMUX structure */
 #endif
 #if !defined (LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_22_23_CR)
 /*IO electrical configuration for MSSIO pad */
-#define LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_22_23_CR    0x00290829UL
+#define LIBERO_SETTING_ALT_MSSIO_BANK2_IO_CFG_22_23_CR    0x04290829UL
     /* IO_CFG_22                         [0:16]  RW value= 0x0829 */
-    /* IO_CFG_23                         [16:16] RW value= 0x0029 */
+    /* IO_CFG_23                         [16:16] RW value= 0x0429 */
 #endif
 #if !defined (LIBERO_SETTING_ALT_MSSIO_VB2_CFG)
 /*default dpc values for MSSIO bank 2 */

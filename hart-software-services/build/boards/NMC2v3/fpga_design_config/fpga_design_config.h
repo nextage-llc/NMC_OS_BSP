@@ -30,7 +30,7 @@
 #define  LIBERO_SETTING_MSS_CONFIGURATOR_VERSION                    "2025.2"
 #define  LIBERO_SETTING_DESIGN_NAME                                 "NMC2v3_MSS"
 #define  LIBERO_SETTING_MPFS_PART                                   "MPFS250T"
-#define  LIBERO_SETTING_GENERATION_DATE                             "07-17-2026_13:05:31"
+#define  LIBERO_SETTING_GENERATION_DATE                             "09-18-2026_04:41:00"
 #define  LIBERO_SETTING_XML_VERSION                                 "0.6.8"
 #define  LIBERO_SETTING_XML_VERSION_MAJOR                           0
 #define  LIBERO_SETTING_XML_VERSION_MINOR                           6
