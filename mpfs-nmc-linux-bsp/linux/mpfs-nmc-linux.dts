@@ -63,46 +63,35 @@
 };
 
 &{/soc} {
-	pcie: pcie@30e0000000 {
-		compatible = "microchip,pcie-host-1.0";
-		#address-cells = <3>;
-		#size-cells = <2>;
-		#interrupt-cells = <1>;
-		device_type = "pci";
-		reg = <0x30 0xe0000000 0x0 0x08000000>, /* 128MB Config space via FIC1 (64-bit) */
-		      <0x00 0x43000000 0x0 0x00010000>; /* 64KB APB control registers via FIC3 */
-		reg-names = "cfg", "apb";
-		bus-range = <0x00 0x7f>;
+    pcie0: pcie@e0000000 {
+        compatible = "microchip,pcie-host-1.0";
+		reg = <0x0 0xe0000000 0x0 0x8000000>,
+        		<0x0 0x40008000 0x0 0x2000>,
+        		<0x0 0x4000a000 0x0 0x2000>;
+        reg-names = "cfg", "bridge", "ctrl";
+		
+        #address-cells = <3>;
+        #size-cells = <2>;
+        device_type = "pci";
 
-		interrupt-parent = <&plic>;
-		interrupts = <119>;
-		interrupt-map = <0 0 0 1 &pcie_intc 0>,
-				<0 0 0 2 &pcie_intc 1>,
-				<0 0 0 3 &pcie_intc 2>,
-				<0 0 0 4 &pcie_intc 3>;
-		interrupt-map-mask = <0 0 0 7>;
+        interrupt-parent = <&plic>;
+        interrupts = <119>;
+        #interrupt-cells = <1>;
 
-		clocks = <&refclk>, <&refclk>, <&refclk>;
-		clock-names = "fic0", "fic1", "fic3";
+        ranges = <0x02000000 0x0 0xe1000000 0x0 0xe1000000 0x0 0x07000000>;
+        dma-ranges = <0x02000000 0x0 0x80000000 0x0 0x80000000 0x0 0x30000000>;
 
-		/* Outbound Memory Range:
-		   Flags (0x02000000 = 32-bit Mem) | PCI Addr (0xE0000000) | CPU Addr (0x0 0xE0000000) | Size (128MB) */
-		ranges = <0x02000000 0x0 0xe0000000 0x0 0xe0000000 0x0 0x08000000>;
+        reset-gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
+        status = "disabled";
 
-		/* Inbound DMA Range:
-		   Flags (0x02000000) | PCI Addr (0x80000000) | CPU Addr (0x0 0x80000000) | Size (1GB) */
-		dma-ranges = <0x02000000 0x0 0x80000000 0x0 0x80000000 0x0 0x40000000>;
-
-		msi-parent = <&pcie>;
-		msi-controller;
-		status = "disabled";
-
-		pcie_intc: interrupt-controller {
-			#address-cells = <0>;
-			#interrupt-cells = <1>;
-			interrupt-controller;
-		};
-	};
+        interrupt-map-mask = <0x0 0x0 0x0 0x7>;
+        interrupt-map = <
+            0x0 0x0 0x0 1 &plic 119
+            0x0 0x0 0x0 2 &plic 119
+            0x0 0x0 0x0 3 &plic 119
+            0x0 0x0 0x0 4 &plic 119
+        >;
+    };
 };
 
 /* Core SoC Reference Clocks */
