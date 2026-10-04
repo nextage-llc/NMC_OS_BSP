@@ -65,32 +65,41 @@
 &{/soc} {
     pcie0: pcie@e0000000 {
         compatible = "microchip,pcie-host-1.0";
-		reg = <0x0 0xe0000000 0x0 0x8000000>,
-        		<0x0 0x40008000 0x0 0x2000>,
-        		<0x0 0x4000a000 0x0 0x2000>;
+        reg = <0x0 0xe0000000 0x0 0x01000000>,   /* ECAM cfg, 16MB (buses 0-15) via FIC1 */
+              <0x0 0x43004000 0x0 0x00002000>,   /* PCIe CTRL 0 bridge regs via FIC3 */
+              <0x0 0x43006000 0x0 0x00002000>;   /* PCIe CTRL 0 ctrl regs via FIC3 */
         reg-names = "cfg", "bridge", "ctrl";
-		
+        bus-range = <0x0 0x0f>;
+
         #address-cells = <3>;
         #size-cells = <2>;
         device_type = "pci";
 
-        interrupt-parent = <&plic>;
-        interrupts = <119>;
-        #interrupt-cells = <1>;
+        clocks = <&clkcfg 28>, <&clkcfg 30>;     /* CLK_FIC1, CLK_FIC3 */
+        clock-names = "fic1", "fic3";
 
+        /* 112MB non-prefetchable MEM window, after the cfg space */
         ranges = <0x02000000 0x0 0xe1000000 0x0 0xe1000000 0x0 0x07000000>;
         dma-ranges = <0x02000000 0x0 0x80000000 0x0 0x80000000 0x0 0x30000000>;
 
-        reset-gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
-        status = "disabled";
-
+        #interrupt-cells = <1>;
+        interrupt-parent = <&plic>;
+        interrupts = <119>;                       /* MSS_INT_F2M[1] */
         interrupt-map-mask = <0x0 0x0 0x0 0x7>;
-        interrupt-map = <
-            0x0 0x0 0x0 1 &plic 119
-            0x0 0x0 0x0 2 &plic 119
-            0x0 0x0 0x0 3 &plic 119
-            0x0 0x0 0x0 4 &plic 119
-        >;
+        interrupt-map = <0 0 0 1 &pcie_intc0 0>,
+                        <0 0 0 2 &pcie_intc0 1>,
+                        <0 0 0 3 &pcie_intc0 2>,
+                        <0 0 0 4 &pcie_intc0 3>;
+
+        msi-parent = <&pcie0>;
+        msi-controller;
+        status = "okay";
+
+        pcie_intc0: interrupt-controller {
+            #address-cells = <0>;
+            #interrupt-cells = <1>;
+            interrupt-controller;
+        };
     };
 };
 

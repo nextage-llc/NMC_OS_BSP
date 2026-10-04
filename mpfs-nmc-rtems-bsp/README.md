@@ -12,7 +12,8 @@ mpfs-nmc-rtems-bsp/
 │   ├── mpfs-nmc-uboot.dts              # Device Tree source file
 │   └── mpfs-nmc-board.dtb              # Compiled Device Tree binary
 ├── hss/
-│   └── hss-envm-wrapper-bm1-p0.bin     # Hart Software Services eNVM wrapper binary
+│   ├── hss-envm-wrapper-bm1-p0.bin     # Hart Software Services eNVM wrapper binary
+│   └── hss-envm-wrapper-bm1-p0.hex     # Same, in Intel-Hex format (for Libero eNVM programming)
 ├── sample/
 │   ├── ticker                          # Sample RTEMS ELF executable
 │   ├── rtems-payload.yaml              # HSS payload configuration file
@@ -23,7 +24,20 @@ mpfs-nmc-rtems-bsp/
 
 ---
 
-## Getting Started
+## Before You Begin
+
+- **The board must already be programmed** with the NMC FPGA design and the Hart Software Services (HSS) bootloader in eNVM (`hss/hss-envm-wrapper-bm1-p0.hex`). The HSS provides the UART0 prompt used to flash `payload.bin` below.
+- **Host tools:** A Linux host (or WSL2) for building, and Tera Term for the serial terminals.
+- **Connections:** USB-to-serial on UART0 and UART1.
+
+## Choose Your Path
+
+- **Use the pre-built sample:** `sample/payload.bin` is already generated from the sample `ticker` application. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
+- **Build your own boot image:** Start at [Part 1: Build the Boot Image](#part-1-build-the-boot-image).
+
+---
+
+## Part 1: Build the Boot Image
 
 ### Step 1: Install Dependencies
 
@@ -33,9 +47,9 @@ Install all required compilation and Device Tree tools:
 sudo apt update && sudo apt install -y build-essential device-tree-compiler libyaml-dev libelf-dev libssl-dev
 ```
 
-### Step 2: Compile the Device Tree Binary (`.dtb`)
+### Step 2: Compile the Device Tree Binary (`.dtb`) — *only if the `.dts` was modified*
 
-Device Tree Binary must be recompiled if Device Tree Source is modified
+The Device Tree Binary must be recompiled if the Device Tree Source is modified:
 
 ```bash
 cd mpfs-nmc-rtems-bsp
@@ -46,9 +60,9 @@ dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
 
 Open `sample/rtems-payload.yaml` and verify that the target executable listed under `payloads:` matches your compiled RTEMS ELF file (`ticker`).
 
-> **Note:** This is a sample payload.yaml & ticker.elf script for example purposes 
+> **Note:** `rtems-payload.yaml` and the `ticker` ELF executable are samples provided for example purposes.
 
-```bash
+```yaml
 # ==============================================================================
 # HSS Payload Configuration - RTEMS Application
 # ==============================================================================
@@ -85,12 +99,16 @@ cd sample
 
 > **Note:** Seeing `NOTICE: ticker: ignoring >>exec-addr=0x1000000000<< as payload is an ELF file` is normal. ELF binaries contain embedded entry points, so the tool automatically uses the embedded execution address.
 
-### Step 5: Hardware Setup & Serial Terminals
+---
+
+## Part 2: Hardware Setup & Serial Terminals
+
+### Step 5: Connect the Board and Open the Serial Terminals
 
 The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 
-- **Primary UART (COM_A / HSS Bootloader):** Displays hardware initialization and boot sequence logs.
-- **Secondary UART (COM_B / RTEMS Console):** Displays the active RTEMS application output.
+- **Primary UART (UART0 / HSS Bootloader):** Displays hardware initialization and boot sequence logs.
+- **Secondary UART (UART1 / RTEMS Console):** Displays the active RTEMS application output.
 
 1. Connect the USB cable from the board to your host PC.
 2. Open two instances of Tera Term configured for **115200 8N1**:
@@ -102,6 +120,10 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 3. Configure the two Tera Term windows:
    - **Tera Term Window 1:** Connect to the first COM port (HSS Bootloader).
    - **Tera Term Window 2:** Connect to the second COM port (RTEMS Application Console).
+
+---
+
+## Part 3: Flash and Boot
 
 ### Step 6: Flash `payload.bin` to eMMC via Tera Term (YMODEM)
 
@@ -127,6 +149,12 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 1. Type `5` and press Enter to run **MMC Write** (writes the image permanently to eMMC flash).
 2. Type `6` and press Enter to quit the utility.
 
-**Boot the application:**
+### Step 7: Boot the Application
 
-- Type `boot` (or power cycle the board).
+Type `boot` (or power cycle the board). The RTEMS application output appears in Tera Term Window 2.
+
+---
+
+## Additional Resources
+
+- [**NMC2v3 Bring-Up Guide**](../docs/NMC2v3_Bring-Up_Guide_Rev8.pdf) (PDF) — supplementary photo walkthrough covering software installation, cable wiring and connector locations (UART0/UART1 headers, power, FlashPro), and programming the FPGA design and HSS `.hex` into eNVM. The guide's flashing steps target Linux, but the YMODEM `payload.bin` procedure is identical for RTEMS.

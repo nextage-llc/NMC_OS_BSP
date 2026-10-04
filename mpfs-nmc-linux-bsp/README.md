@@ -23,7 +23,22 @@ mpfs-nmc-linux-bsp/
 
 ---
 
-## Getting Started
+## Before You Begin
+
+- **The board must already be programmed** with the NMC FPGA design and the Hart Software Services (HSS) bootloader in eNVM. The HSS provides the UART0 prompt used to flash `payload.bin` below.
+- **Host tools:** WSL2 / Ubuntu 22.04 LTS (for building), Tera Term (serial terminals), and a TFTP server such as tftpd64.
+- **Connections:** USB-to-serial on UART0 and UART1, and an Ethernet cable from the board to the host PC.
+
+## Choose Your Path
+
+Two images are flashed to the board: **`payload.bin`** (HSS-wrapped U-Boot) and **`sdcard.img`** (kernel + DTB + rootfs).
+
+- **Use the pre-built images:** `sample/payload.bin` in this repo is ready to flash as-is, and a pre-built `sdcard.img` is available on the [Releases](https://github.com/nextage-llc/NMC_OS_BSP/releases) page. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
+- **Build from source:** Start at [Part 1: Build the Images](#part-1-build-the-images).
+
+---
+
+## Part 1: Build the Images
 
 ### Step 1: Install Dependencies
 
@@ -104,12 +119,12 @@ make
 ```
 
 > **Note:** Outputs land in `buildroot/output/images/` — `payload.bin`, `sdcard.img`, `mpfs_icicle.itb`, and `boot.vfat`. To adjust peripherals/config instead of applying a saved snapshot, use `make menuconfig`, `make uboot-menuconfig`, or `make linux-menuconfig`.
->
-> **Don't want to build from source?** `sample/payload.bin` in this repo is ready to flash as-is, and a pre-built `sdcard.img` is available on the [Releases](../../releases) page — skip straight to Hardware Setup below using those instead.
 
 ---
 
-## Hardware Setup & Serial Terminals
+## Part 2: Hardware Setup & Serial Terminals
+
+### Step 5: Connect the Board and Open the Serial Terminals
 
 The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 
@@ -129,9 +144,9 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 
 ---
 
-## Flashing the Image
+## Part 3: Flash and Boot
 
-### Step 1: Flash `payload.bin` to eMMC via Tera Term (YMODEM)
+### Step 6: Flash `payload.bin` to eMMC via Tera Term (YMODEM)
 
 **Interrupt the HSS boot sequence:**
 
@@ -155,14 +170,14 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 1. Type `5` and press Enter to run **MMC Write** (writes the image permanently to eMMC flash).
 2. Type `6` and press Enter to quit the utility.
 
-At this point, resetting the board should land at a U-Boot prompt in Tera Term Window 2 — a good checkpoint before continuing to Step 2.
+> **Checkpoint:** Resetting the board should now land at a U-Boot prompt in Tera Term Window 2. Resolve this before continuing to Step 7.
 
-### Step 2: Flash `sdcard.img` to eMMC via TFTP (UART1)
+### Step 7: Flash `sdcard.img` to eMMC via TFTP (UART1)
 
 **Set up the TFTP server:**
 
 1. Connect the board's Ethernet port to your host PC.
-2. Start a TFTP server (e.g. **tftpd64**), point it at the directory containing your `sdcard.img` (`buildroot/output/images/sdcard.img`, or the one downloaded from Releases), and select your host's Ethernet interface.
+2. Start a TFTP server (e.g. **tftpd64**), point it at the directory containing your `sdcard.img` (`buildroot/output/images/sdcard.img`, or the one downloaded from [Releases](https://github.com/nextage-llc/NMC_OS_BSP/releases)), and select your host's Ethernet interface.
 
 **Configure the network in Tera Term Window 2:**
 
@@ -183,7 +198,7 @@ mmc dev 0
 mmc write 0x84000000 0 ${blkcnt}
 ```
 
-### Step 3: Boot Linux from eMMC
+### Step 8: Boot Linux from eMMC
 
 ```text
 fatload mmc 0:2 0x84000000 mpfs_icicle.itb
@@ -191,6 +206,7 @@ bootm 0x84000000
 ```
 
 Or type `boot` (or power cycle the board) once U-Boot is configured to load from eMMC by default.
+(see [Known Issues](#known-issues)).
 
 ---
 
@@ -199,10 +215,15 @@ Or type `boot` (or power cycle the board) once U-Boot is configured to load from
 ### Login
 
 ```text
+login: root
 password: root
 ```
 
-### Persisting Auto-Boot Across Resets
+---
+
+## Known Issues
+
+### Reset lands at the U-Boot prompt instead of booting Linux
 
 If a reset lands back at the U-Boot prompt instead of booting Linux automatically, `bootcmd` hasn't been persisted yet:
 
@@ -218,3 +239,27 @@ saveenv
 ```
 
 Resets will boot straight into Linux from then on.
+
+### U-Boot or kernel `.config` reverts to Icicle Kit defaults
+
+Buildroot generates `output/build/uboot-custom/.config` and `output/build/linux-custom/.config` itself (Icicle defconfig + `buildroot-external-microchip` fragment), and will regenerate them — overwriting the files copied in Step 4 — when:
+
+- `make uboot-reconfigure` or `make linux-reconfigure` is run
+- `make clean`, `make uboot-dirclean`, or `make linux-dirclean` is run (this also removes the copied DTS files)
+- files in `buildroot-external-microchip` change (e.g. after a `git pull`)
+- the WSL2 clock is out of sync (`make` prints `Clock skew detected`); run `wsl --shutdown` from Windows and reopen WSL to resync
+
+**Check** after Step 4's build finishes (run from `~/NMC-Linux/buildroot`):
+
+```bash
+diff -q ~/NMC-Linux/mpfs-nmc-linux-bsp/uboot/.config output/build/uboot-custom/.config || echo "U-BOOT CONFIG DIFFERS"
+diff -q ~/NMC-Linux/mpfs-nmc-linux-bsp/linux/.config output/build/linux-custom/.config || echo "LINUX CONFIG DIFFERS"
+```
+
+**Fix:** repeat Step 4. The regeneration that overwrote the files also refreshes Buildroot's internal timestamp, so the second copy sticks (if the WSL2 clock was the cause, resync it first). Avoid running `uboot-reconfigure` / `linux-reconfigure` after Step 4.
+
+---
+
+## Additional Resources
+
+- [**NMC2v3 Bring-Up Guide**](../docs/NMC2v3_Bring-Up_Guide_Rev8.pdf) (PDF) — supplementary photo walkthrough of this process, including software installation, cable wiring and connector locations (UART0/UART1 headers, Ethernet, power, FlashPro), and programming the FPGA design and HSS into eNVM.

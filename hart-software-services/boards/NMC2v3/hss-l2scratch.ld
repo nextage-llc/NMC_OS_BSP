@@ -13,8 +13,8 @@ MEMORY
     l2lim (rwx) : ORIGIN = 0x08000000, LENGTH = 512k
     l2zerodevice (rwx) : ORIGIN = 0x0A000000, LENGTH = 512k
     ddr (rwx) : ORIGIN = 0x80000000, LENGTH = 32m
-    ddrhi (rwx) : ORIGIN = 0x1000000000, LENGTH = 1888m
-    ncddrhi (rwx) : ORIGIN = 0x1400000000, LENGTH = 2048m
+    ddrhi (rwx) : ORIGIN = 0x1000000000, LENGTH = 1024m
+    ncddrhi (rwx) : ORIGIN = 0x1400000000, LENGTH = 1024m
 }
 PROVIDE(HEAP_SIZE = 0k);
 PROVIDE(STACK_SIZE_PER_HART = 16k);
