@@ -33,7 +33,7 @@ mpfs-nmc-linux-bsp/
 
 Two images are flashed to the board: **`payload.bin`** (HSS-wrapped U-Boot) and **`sdcard.img`** (kernel + DTB + rootfs).
 
-- **Use the pre-built images:** `sample/payload.bin` in this repo is ready to flash as-is, and a pre-built `sdcard.img` is available on the [Releases](https://github.com/nextage-llc/NMC_OS_BSP/releases) page. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
+- **Use the pre-built images:** `sample/payload.bin` in this repo is ready to flash as-is, and a pre-built `sdcard.img` is available on the [v2.0.0 Sample Linux NMC](https://github.com/nextage-llc/NMC_OS_BSP/releases/tag/v2.0.0) release page. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
 - **Build from source:** Start at [Part 1: Build the Images](#part-1-build-the-images).
 
 ---
@@ -177,7 +177,7 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 **Set up the TFTP server:**
 
 1. Connect the board's Ethernet port to your host PC.
-2. Start a TFTP server (e.g. **tftpd64**), point it at the directory containing your `sdcard.img` (`buildroot/output/images/sdcard.img`, or the one downloaded from [Releases](https://github.com/nextage-llc/NMC_OS_BSP/releases)), and select your host's Ethernet interface.
+2. Start a TFTP server (e.g. **tftpd64**), point it at the directory containing your `sdcard.img` (`buildroot/output/images/sdcard.img`, or the one downloaded from the [v2.0.0 Sample Linux NMC](https://github.com/nextage-llc/NMC_OS_BSP/releases/tag/v2.0.0) release), and select your host's Ethernet interface.
 
 **Configure the network in Tera Term Window 2:**
 
