@@ -1,0 +1,2 @@
+# BitBake parses these on Linux; CRLF breaks shell tasks (e.g. "cp ...\r").
+* text eol=lf

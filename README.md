@@ -26,10 +26,10 @@ eNVM:  Hart Software Services (HSS)
          ▼  loads payload.bin from eMMC
 eMMC:  payload.bin
          ├── RTEMS:  RTEMS application
-         └── Linux:  U-Boot ──► Linux kernel + rootfs (sdcard.img)
+         └── Linux:  U-Boot ──► Linux kernel + rootfs (sdcard.img or yocto.wic.gz)
 ```
 
-The HSS is common to both targets — choosing RTEMS or Linux comes down to which `payload.bin` (and, for Linux, `sdcard.img`) is flashed to eMMC.
+The HSS is common to both targets — choosing RTEMS or Linux comes down to which `payload.bin` (and, for Linux, the disk image) is flashed to eMMC.
 
 ---
 
@@ -40,14 +40,14 @@ MPFS_NMC_OS/
 ├── docs/                       # Supplementary documentation (NMC Bring-Up Guide)
 ├── hart-software-services/     # Microchip HSS source code repository
 ├── mpfs-nmc-rtems-bsp/         # Distributed RTEMS Board Support Package
-└── mpfs-nmc-linux-bsp/         # Distributed Linux (Buildroot) Board Support Package
+└── mpfs-nmc-linux-bsp/         # Distributed Linux (Buildroot + Yocto) Board Support Package
 ```
 
 ---
 
 ## Additional Resources
 
-- [**NMC2v3 Bring-Up Guide**](./docs/NMC2v3_Bring-Up_Guide_Rev8.pdf) (PDF) — photo walkthrough of taking a bare NMC board to a Linux prompt: software installation, cabling and connector locations, FPGA/eNVM programming, and Linux flashing.
+- [**NMC2v3 Bring-Up Guide (Buildroot)**](./docs/NMC2v3_Bring-Up_Guide_Rev8_Buildroot.pdf) and [**NMC2v3 Bring-Up Guide (Yocto)**](./docs/NMC2v3_Bring-Up_Guide_Rev16_Yocto.pdf) (PDF) — photo walkthroughs of taking a bare NMC board to a Linux prompt: software installation, cabling and connector locations, FPGA/eNVM programming, and Linux flashing.
 
 ---
 
@@ -70,7 +70,7 @@ Install host build tools:
 sudo apt update && sudo apt install -y build-essential device-tree-compiler libyaml-dev libelf-dev libssl-dev
 ```
 
-> The Linux boot path (`mpfs-nmc-linux-bsp`) has its own, separate environment requirements (WSL2/Ubuntu 22.04 + Buildroot dependencies) — see that repo's README rather than this section.
+> The Linux boot path (`mpfs-nmc-linux-bsp`) has its own, separate environment requirements (WSL2/Ubuntu 22.04 + Buildroot or Yocto dependencies) — see that repo's README rather than this section.
 
 ### 2. Compiling the HSS Bootloader
 
@@ -131,4 +131,4 @@ To build or update the standalone host binary generator stored in `mpfs-nmc-rtem
   dtc -I dts -O dtb -o dts/mpfs-nmc-board.dtb dts/mpfs-nmc-uboot.dts
   ```
 
-- **Linux** — Built entirely differently via [`buildroot-external-microchip`](https://github.com/linux4microchip/buildroot-external-microchip) layered on top of upstream Buildroot, run inside WSL2/Ubuntu 22.04 rather than the xPack toolchain and HSS repo used above. For environment setup, applying the NMC device tree/config overlay, building images, and flashing, see [`mpfs-nmc-linux-bsp/README.md`](./mpfs-nmc-linux-bsp/README.md).
+- **Linux** — Built entirely differently, with either Buildroot ([`buildroot-external-microchip`](https://github.com/linux4microchip/buildroot-external-microchip)) or Yocto ([`meta-mchp`](https://github.com/linux4microchip/meta-mchp)), run inside WSL2/Ubuntu 22.04 rather than the xPack toolchain and HSS repo used above. For environment setup, applying the NMC device trees/config, building images, and flashing, see [`mpfs-nmc-linux-bsp/README.md`](./mpfs-nmc-linux-bsp/README.md).
