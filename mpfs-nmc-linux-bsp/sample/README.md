@@ -12,6 +12,6 @@ Pre-built images for each build system. Flash the payload and disk image from th
 
 - **`payload-yocto.bin`** (in this folder) — sample HSS-wrapped U-Boot image built with `meta-nmc`. Flash via YMODEM on UART0 — see [Step 9: Flash `payload-yocto.bin`](../yocto/README.md#step-9-flash-payload-yoctobin-to-emmc-via-tera-term-ymodem).
 
-- **`yocto.wic.gz`** (compressed full-disk image, about 138 MB) is **not** stored in this repo — it's published as a build artifact on the repo's [Releases](https://github.com/nextage-llc/NMC_OS_BSP/releases) page. Download `yocto.wic.gz` and flash it via TFTP on UART1 with `gzwrite` — see [Step 10: Flash `yocto.wic.gz`](../yocto/README.md#step-10-flash-yoctowicgz-to-emmc-via-tftp-uart1).
+- **`yocto.wic.gz`** (compressed full-disk image, about 138 MB) is **not** stored in this repo — it's published as a build artifact on the repo's [**v2.0.0 Sample Linux NMC**](https://github.com/nextage-llc/NMC_OS_BSP/releases/tag/v2.0.0) release. Download `yocto.wic.gz` from there and flash it via TFTP on UART1 with `gzwrite` — see [Step 10: Flash `yocto.wic.gz`](../yocto/README.md#step-10-flash-yoctowicgz-to-emmc-via-tftp-uart1).
 
 If you'd rather build your own instead of using these, see Part 1 of the [Buildroot](../buildroot/README.md#part-1-build-the-images) or [Yocto](../yocto/README.md#part-1-build-the-images) guide.

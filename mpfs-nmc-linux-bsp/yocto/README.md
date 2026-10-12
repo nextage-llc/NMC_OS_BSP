@@ -36,7 +36,7 @@ meta-nmc/
 
 Two images are flashed to the board: **`payload-yocto.bin`** (HSS-wrapped U-Boot) and **`yocto.wic.gz`** (compressed full-disk image: boot partition with `fitImage` + `boot.scr`, and the rootfs).
 
-- **Use the pre-built images:** `sample/yocto/payload-yocto.bin` in this BSP is ready to flash as-is. `yocto.wic.gz` is too large for the repo; see [`sample/README.md`](../sample/README.md) for where to get it. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
+- **Use the pre-built images:** `sample/yocto/payload-yocto.bin` in this BSP is ready to flash as-is, and a pre-built `yocto.wic.gz` is available on the [v2.0.0 Sample Linux NMC](https://github.com/nextage-llc/NMC_OS_BSP/releases/tag/v2.0.0) release page. Skip to [Part 2: Hardware Setup](#part-2-hardware-setup--serial-terminals).
 - **Build from source:** Start at [Part 1: Build the Images](#part-1-build-the-images).
 
 > Flash the payload and disk image from the same build system. The Yocto U-Boot boots `fitImage` from partition 1 via `boot.scr`, while the Buildroot U-Boot boots `mpfs_icicle.itb` from partition 2, so a mixed pair will not boot on its own.
@@ -231,7 +231,7 @@ The PolarFire SoC custom board exposes two separate UART interfaces via USB:
 **Set up the TFTP server:**
 
 1. Connect the board's J19 Ethernet port (eth0 end of the cable) to your host PC.
-2. Start a TFTP server (e.g. **tftpd64**), point it at the folder containing `yocto.wic.gz`, and select your host's Ethernet interface. Note the interface's IP address; set it manually on the host adapter if needed.
+2. Start a TFTP server (e.g. **tftpd64**), point it at the folder containing `yocto.wic.gz` (your own build, or the one downloaded from the [v2.0.0 Sample Linux NMC](https://github.com/nextage-llc/NMC_OS_BSP/releases/tag/v2.0.0) release), and select your host's Ethernet interface. Note the interface's IP address; set it manually on the host adapter if needed.
 
 **Configure the network in Tera Term Window 2:**
 
